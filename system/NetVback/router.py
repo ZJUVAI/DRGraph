@@ -29,7 +29,8 @@ def getLayout():
         "samples": 200,
         "gamma" : 0.1,
         "A": 2.0,
-        "B": 1.0
+        "B": 1.0,
+        "threads": 8
     }
 
     reponse = json.loads(request.get_data())
@@ -95,6 +96,8 @@ def getLayout():
         str(parameterList["A"]),
         "-B",
         str(parameterList["B"]),
+        "-threads",
+        str(parameterList["threads"])
     ])
 
     node_pos = []
@@ -140,5 +143,5 @@ def getAll():
     return Response(json.dumps(result), content_type="application/json")
 
 if __name__ == '__main__':
-    app.run(debug=True)
-    # app.run()
+    # app.run(debug=True)
+    app.run()
