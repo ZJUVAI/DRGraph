@@ -92,8 +92,8 @@ float* evaluation::load_vis(string& infile, int &vertices, int &dim) {
     return res;
 }
 
-real evaluation::CalcDist2D(int x, int y) {
-    real ret = 0;
+float evaluation::CalcDist2D(int x, int y) {
+    float ret = 0;
     int i, lx = x * out_dim, ly = y * out_dim;
     for (i = 0; i < out_dim; i++) {
         ret += (vis[lx + i] - vis[ly + i]) * (vis[lx + i] - vis[ly + i]);
@@ -125,9 +125,9 @@ void evaluation::test_accuracy1() {
     int hit_case = 0;
     for (int i = 0; i < samp_num; i++) {// for each valid item
         int neighbor = -1;
-        real dis = FLT_MAX;
+        float dis = FLT_MAX;
         for(int j = 0; j < cur_num; j++){//for each training item
-            real temp = CalcDist2D(samp[i], seq[j]);
+            float temp = CalcDist2D(samp[i], seq[j]);
             if (dis > temp) {
                 neighbor = seq[j];
                 dis = temp;
@@ -140,7 +140,7 @@ void evaluation::test_accuracy1() {
     t.end();
 
     cout << "[EVALUATION] Test average accuracy: " << res << "%"
-         << " Evaluation Real Time: "<<  t.real_time() <<"s"
+         << " Evaluation real Time: "<<  t.real_time() <<"s"
          << " Evaluation CPU Time: "<<  t.cpu_time() << "s" << endl;
 
 }
@@ -178,7 +178,7 @@ void evaluation::accuracy(int k_neighbors) {
     cout.setf(ios::fixed);
     cout.precision(4);
     cout << "[EVALUATION]" << setw(4) << right << k_neighbors << "-NN Classifier average accuracy: " << setw(5) << right << res << "%" << endl
-         << " Evaluation Real Time: "<<  setw(7) << right << t.real_time() <<"s"
+         << " Evaluation real Time: "<<  setw(7) << right << t.real_time() <<"s"
          << " Evaluation CPU Time: "<< setw(7) << right << t.cpu_time() << "s" << endl;
 }
 
@@ -194,7 +194,7 @@ void *evaluation::accuracy_thread_caller(void* arg){
 //         std::vector<Dis> distance;
 //         float dis_t = 0;
 //         for(int j = 0; j < cur_num; j++){//for each training item
-//             real temp = CalcDist2D(samp[i], seq[j]);
+//             float temp = CalcDist2D(samp[i], seq[j]);
 //             if(j < k_neighbors){
 //                 distance.push_back(Dis(seq[j],temp));
 //                 if(temp > dis_t) {
@@ -237,7 +237,7 @@ void *evaluation::accuracy_thread_caller(void* arg){
 
 void evaluation::accuracy_thread(int Id){
     int hit_case = 0;
-    real* distance = new real[k_neighbors + 1];
+    float* distance = new float[k_neighbors + 1];
     int* id = new int[k_neighbors + 1];
     int* sortArray = new int[k_neighbors + 1];
     auto cmp = [&](int a, int b) {
@@ -249,7 +249,7 @@ void evaluation::accuracy_thread(int Id){
         float dis_t = 0;
         bool firstSort = false;
         for(int j = 0; j < cur_num; j++){//for each training item
-            real temp = CalcDist2D(samp[i], seq[j]);
+            float temp = CalcDist2D(samp[i], seq[j]);
             if(j < k_neighbors){
                 distance[j] = temp;
                 id[j] = seq[j];
@@ -324,7 +324,7 @@ void evaluation::accuracy_thread(int Id){
 
 // void evaluation::accuracy_thread(int Id){
 //     int hit_case = 0;
-//     real* distance = new real[k_neighbors];
+//     float* distance = new float[k_neighbors];
 //     int* id = new int[k_neighbors];
 //     int* sortArray = new int[k_neighbors];
 //     auto cmp = [&](int a, int b) {
@@ -336,7 +336,7 @@ void evaluation::accuracy_thread(int Id){
 //         float dis_t = 0;
 //         bool firstSort = false;
 //         for(int j = 0; j < cur_num; j++){//for each training item
-//             real temp = CalcDist2D(samp[i], seq[j]);
+//             float temp = CalcDist2D(samp[i], seq[j]);
 //             if(j < k_neighbors){
 //                 distance[j] = temp;
 //                 id[j] = seq[j];
@@ -433,7 +433,7 @@ void evaluation::accuracy_All(int k_neighbors) {
     cout.setf(ios::fixed);
     cout.precision(4);
     
-    cout << " Evaluation Real Time: "<<  setw(7) << right << t.real_time() <<"s"
+    cout << " Evaluation real Time: "<<  setw(7) << right << t.real_time() <<"s"
          << " Evaluation CPU Time: "<< setw(7) << right << t.cpu_time() << "s" << endl;
     
     for(int j = 0; j < 7; ++j) {
@@ -454,7 +454,7 @@ void *evaluation::accuracy_thread_caller_All(void* arg){
 
 void evaluation::accuracy_thread_All(int Id){
     int hit_case[7] = {0, 0, 0, 0, 0, 0, 0};
-    real* distance = new real[k_neighbors + 1];
+    float* distance = new float[k_neighbors + 1];
     int* id = new int[k_neighbors + 1];
     int* sortArray = new int[k_neighbors + 1];
     auto cmp = [&](int a, int b) {
@@ -465,7 +465,7 @@ void evaluation::accuracy_thread_All(int Id){
         float dis_t = 0;
                 bool firstSort = false;
         for(int j = 0; j < cur_num; j++){//for each training item
-            real temp = CalcDist2D(samp[i], seq[j]);
+            float temp = CalcDist2D(samp[i], seq[j]);
             if(j < k_neighbors){
                 distance[j] = temp;
                 id[j] = seq[j];

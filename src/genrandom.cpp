@@ -8,7 +8,7 @@ genrandom::genrandom() {}
 //LargeVis gsl back[0,1)
 gsl_rng * genrandom::init_gsl (){
     const gsl_rng_type * T;
-    real u;
+    float u;
     gsl_rng_env_setup();
     T = gsl_rng_default;
     r = gsl_rng_alloc(T);
@@ -16,8 +16,8 @@ gsl_rng * genrandom::init_gsl (){
     //gsl_rng_set(r, 314159265);
 }
 
-real genrandom::gslRandom() {
-    real u = gsl_rng_uniform (r);
+float genrandom::gslRandom() {
+    float u = gsl_rng_uniform (r);
     return u;
 }
 

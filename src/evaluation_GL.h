@@ -22,8 +22,6 @@
 
 using namespace std;
 
-typedef float real;
-
 namespace GL {
 
     struct arg_evaluation{
@@ -55,7 +53,7 @@ namespace GL {
 
         Data d;
 
-        real CalcDist2D(int x, int y);
+        float CalcDist2D(int x, int y);
 
 
     public:

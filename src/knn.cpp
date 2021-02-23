@@ -47,7 +47,7 @@ void knn::load_data(string& infile){
 
 void knn::normalize() {
     cout << "[DATA] " << "Normalizing ......";
-    real *mean = new real[n_dim];
+    float *mean = new float[n_dim];
     for (int i = 0; i < n_dim; ++i) mean[i] = 0;
 
     for (int i = 0, ll = 0; i < n_vertices; ++i, ll += n_dim){
@@ -57,7 +57,7 @@ void knn::normalize() {
     for (int j = 0; j < n_dim; ++j){
         mean[j] /= n_vertices;
     }
-    real mX = 0;
+    float mX = 0;
     for (int i = 0, ll = 0; i < n_vertices; ++i, ll += n_dim){
         for (int j = 0; j < n_dim; ++j){
             vec[ll + j] -= mean[j];
@@ -156,7 +156,7 @@ void knn::construct_knn () {
             run_propagation();
             t.end(); 
             cout<<"[kNN Graph] " << "Largevis kNN building CPU time : " << t.cpu_time() << " seconds" << endl;
-            cout<< "[kNN Graph] " << "Largevis kNN building real time: " << t.real_time() << " seconds"<<endl;
+            cout<< "[kNN Graph] " << "Largevis kNN building float time: " << t.real_time() << " seconds"<<endl;
         } else if (knn_type == "efanna") {
             t.start(); 
             efanna::Matrix<float> dataset(n_vertices, n_dim, vec);
@@ -166,7 +166,7 @@ void knn::construct_knn () {
             index.buildIndex();
             t.end(); 
             cout<< "[kNN Graph] " << "EFanna kNN building CPU time: " << t.cpu_time() << " seconds"<<endl;
-            cout<<"[kNN Graph] " << "Efanna kNN building Real time: " << t.real_time() << " seconds" << endl;
+            cout<<"[kNN Graph] " << "Efanna kNN building float time: " << t.real_time() << " seconds" << endl;
             index.getGraphResult(knn_vec);
         }
         test_accuracy();
@@ -189,10 +189,10 @@ void knn::annoy_thread(int id)
 {
     int lo = id * n_vertices / n_threads;
     int hi = (id + 1) * n_vertices / n_threads;
-    AnnoyIndex<int, real, Euclidean, Kiss64Random> *cur_annoy_index = NULL;
+    AnnoyIndex<int, float, Euclidean, Kiss64Random> *cur_annoy_index = NULL;
     if (id > 0)
     {
-        cur_annoy_index = new AnnoyIndex<int, real, Euclidean, Kiss64Random>(n_dim);
+        cur_annoy_index = new AnnoyIndex<int, float, Euclidean, Kiss64Random>(n_dim);
         cur_annoy_index->load("annoy_index_file");
     }
     else
@@ -212,7 +212,7 @@ void knn::annoy_thread(int id)
 
 void knn::run_annoy() {
     printf("[kNN Graph] Running ANNOY ......"); fflush(stdout);
-    annoy_index = new AnnoyIndex<int, real, Euclidean, Kiss64Random>(n_dim);
+    annoy_index = new AnnoyIndex<int, float, Euclidean, Kiss64Random>(n_dim);
     for (int i = 0; i < n_vertices; ++i)
         annoy_index->add_item(i, &vec[i * n_dim]);
     annoy_index->build(n_trees);
@@ -232,7 +232,7 @@ void knn::propagation_thread(int id)
     int lo = id * n_vertices / n_threads;
     int hi = (id + 1) * n_vertices / n_threads;
     int *check = new int[n_vertices];
-    std::priority_queue< pair<real, int> > heap;
+    std::priority_queue< pair<float, int> > heap;
     int x, y, i, j, l1, l2;
     for (x = 0; x < n_vertices; ++x) check[x] = -1;
     for (x = lo; x < hi; ++x)
@@ -293,9 +293,9 @@ void knn::run_propagation()
 }
 
 
-real knn::CalcDist(int x, int y)
+float knn::CalcDist(int x, int y)
 {
-    real ret = 0;
+    float ret = 0;
     int i, lx = x * n_dim, ly = y * n_dim;
     for (i = 0; i < n_dim; ++i)
         ret += (vec[lx + i] - vec[ly + i]) * (vec[lx + i] - vec[ly + i]);
@@ -305,7 +305,7 @@ real knn::CalcDist(int x, int y)
 void knn::test_accuracy() {
     n_neighbors = knn_vec[0].size();
     int test_case = 100;
-    std::priority_queue< pair<real, int> > *heap = new std::priority_queue< pair<real, int> >;
+    std::priority_queue< pair<float, int> > *heap = new std::priority_queue< pair<float, int> >;
     int hit_case = 0, i, j, x, y;
     for (i = 0; i < test_case; ++i)
     {

@@ -17,18 +17,15 @@
 #include "timer.h"
 #include "util.h"
 
-typedef float real;
-
-
 class knn{
 private:
     static const gsl_rng_type * gsl_T;
     static gsl_rng * gsl_r;
     
     int n_threads, n_trees, n_neighbors, n_propagations;
-    real *vec;
+    float *vec;
     vector<int> *old_knn_vec;
-    AnnoyIndex<int, real, Euclidean, Kiss64Random> *annoy_index;
+    AnnoyIndex<int, float, Euclidean, Kiss64Random> *annoy_index;
     string knn_type;
     int knn_trees, epochs, mlevel, L, checkK, knn_k, S, build_trees;
 
@@ -47,7 +44,7 @@ public:
     ~knn();
     knn();
 
-    real CalcDist(int x, int y);
+    float CalcDist(int x, int y);
     void load_data(string& infile);
     void load_knn(string& infile);
     

@@ -49,8 +49,8 @@ namespace GL {
         return v;
     }
 
-    real evaluation::CalcDist2D(int x, int y) {
-        real ret = 0;
+    float evaluation::CalcDist2D(int x, int y) {
+        float ret = 0;
         int i, lx = x * out_dim, ly = y * out_dim;
         for (i = 0; i < out_dim; i++) {
             ret += (vis[lx + i] - vis[ly + i]) * (vis[lx + i] - vis[ly + i]);

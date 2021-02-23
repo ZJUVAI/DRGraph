@@ -15,9 +15,6 @@
 using namespace std;
 
 namespace DR {
-
-    typedef float real;
-
     struct arg_evaluation {
         void *ptr;
         int id;
@@ -35,7 +32,7 @@ namespace DR {
         int n_vertices, out_dim, samp_num, cur_num;
         int *seq, *samp;
 
-        real CalcDist2D(int x, int y);
+        float CalcDist2D(int x, int y);
 
         int k_neighbors = 1;
         int n_threads = 8;
