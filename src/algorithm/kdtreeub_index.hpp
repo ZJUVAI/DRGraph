@@ -1193,7 +1193,7 @@ protected:
 		unsigned N = features_.get_rows();
 		unsigned seed = 1998;
 		std::mt19937 rng(seed);
-		nhoods.resize(N);
+		nhoods.resize(N, Neighbor());
 		g.resize(N);
 		boost::dynamic_bitset<> visited(N, false);
 		knn_graph.resize(N);

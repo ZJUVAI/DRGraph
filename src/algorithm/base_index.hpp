@@ -80,6 +80,21 @@ struct Neighbor
   std::vector<unsigned> nn_new;
   std::vector<unsigned> rnn_old;
   std::vector<unsigned> rnn_new;
+  Neighbor() {}
+  Neighbor(const Neighbor& obj) {
+    lock = obj.lock;
+    radius = obj.radius;
+    radiusM = obj.radiusM;
+    pool = obj.pool;
+    L = obj.L;
+    Range = obj.Range;
+    found = obj.found;
+    nn_old = obj.nn_old;
+    nn_new = obj.nn_new;
+    rnn_old = obj.rnn_old;
+    rnn_new = obj.rnn_new;
+  }
+
   unsigned insert(unsigned id, float dist)
   {
     if (dist > radius)
