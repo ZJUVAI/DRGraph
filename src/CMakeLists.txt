@@ -1,10 +1,3 @@
-
-
-IF(OPENMP_FOUND)
-    MESSAGE(WARNING "using OpenMP.")
-ELSE()
-    MESSAGE(WARNING "Not using OpenMP. Performance will suffer.")
-ENDIF()
 set(Boost_USE_STATIC_LIBS ON)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)

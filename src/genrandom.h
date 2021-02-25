@@ -13,7 +13,7 @@ private:
     gsl_rng * r;
 public:
     genrandom();
-    gsl_rng * init_gsl ();
+    void init_gsl ();
     float gslRandom();
 };
 

@@ -82,7 +82,7 @@ struct Neighbor
   std::vector<unsigned> rnn_new;
   Neighbor() {}
   Neighbor(const Neighbor& obj) {
-    lock = obj.lock;
+    lock = Lock();
     radius = obj.radius;
     radiusM = obj.radiusM;
     pool = obj.pool;
