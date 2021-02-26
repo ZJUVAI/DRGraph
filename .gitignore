@@ -87,3 +87,5 @@ __pycache__
 .ipynb_checkpoints
 
 *.cu
+
+*.tar.gz
