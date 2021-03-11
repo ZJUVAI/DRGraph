@@ -21,6 +21,9 @@ bash build_GPU.sh
 ./Vis -input ./data/block_2000.txt -output block_2000.txt -neg 5 -samples 400 -gamma 0.1 -mode 1 -A 2 -B 1
 
 python ./visualization/layout.py -graph ./data/block_2000.txt -layout block_2000.txt -outpng block_2000.png
+
+./Evaluation -input ./data/block_2000.txt -output block_2000.txt -type 2
+# -type 0-3
 ```
 
 ### system

@@ -15,6 +15,9 @@ if(NOT DEFINED ENV{DRGRAPH_GPU_COMPILE})
     add_executable(Vis main.cpp knn.cpp visualizemod.cpp algorithm/kmeans.c evaluation_DR.cpp 
         sp_evaluation.cpp evaluation_GL.cpp timer.cpp genrandom.cpp data.cpp space_partition.cpp quadtree.h quadtree.cpp multilevel.cpp)
     target_link_libraries(Vis pthread gsl gslcblas ${Boost_LIBRARIES})
+    add_executable(Evaluation evaluation_main.cpp data.cpp evaluation_GL.cpp timer.cpp genrandom.cpp knn.cpp)
+    target_link_libraries(Evaluation pthread gsl gslcblas ${Boost_LIBRARIES})
+
 else()
     enable_language("CUDA")
     find_package(CUDA QUIET REQUIRED)

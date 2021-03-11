@@ -41,9 +41,11 @@ RUN apk add openmp --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testin
 COPY src/ ./DRGRAPH/src
 COPY build.sh ./DRGRAPH
 COPY CMakeLists.txt ./DRGRAPH
-# COPY data/ ./DRGRAPH/data
+COPY data/ ./DRGRAPH/data
 
 RUN cd DRGRAPH && mkdir build && sh build.sh
+
+CMD sh
 # RUN pip install wheel && cd DRGRAPH/system/NetVback && pip install -r requirements.txt
 
 # EXPOSE 9098
