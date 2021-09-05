@@ -6,8 +6,12 @@
 #include <malloc.h>
 #include <cstring>
 #include <boost/program_options.hpp>
+#include <indicators/progress_bar.hpp>
+#include <indicators/progress_spinner.hpp>
 #include "data.h"
 namespace  bpo = boost::program_options;
+
+
 
 
 std::string input, output;
@@ -70,8 +74,6 @@ int main(int argc, char** argv){
     }else if(method == "DR"){
         data.load_vector(input);
     }
-
-
 
     return 0;
 }

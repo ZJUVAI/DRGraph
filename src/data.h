@@ -13,6 +13,9 @@
 #include <memory>
 #include <math.h>
 #include <omp.h>
+#include <indicators/progress_bar.hpp>
+#include <indicators/progress_spinner.hpp>
+#include <indicators/cursor_control.hpp>
 
 #define INF 2 << 22
 

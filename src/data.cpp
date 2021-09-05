@@ -34,28 +34,40 @@ void Data::load_graph(std::string& file){
         std::getline(fin, line);
         std::istringstream iss(line);
         iss >> n_vertices >> n_edges;
-        std::cout << "[DATA] Reading graph edges from " << file << " with #V = " << n_vertices << " and #E = " << n_edges << std::endl;
+        std::cout << "[DATA] Loading graph edges from " << file << " with #V=" << n_vertices << " and #E=" << n_edges << std::endl;
+
+        indicators::ProgressSpinner bar{
+            indicators::option::PrefixText{"[DATA] "},
+            indicators::option::MaxProgress{n_edges},
+            indicators::option::SpinnerStates{std::vector<std::string>{"⠈", "⠐", "⠠", "⢀", "⡀", "⠄", "⠂", "⠁"}},
+            indicators::option::ShowElapsedTime{true},
+            indicators::option::ShowRemainingTime{true},
+        };
+        indicators::show_console_cursor(false);
         for (int i = 0; i < n_edges; i++) {
             std::getline(fin, line);
             std::istringstream iss(line);
             iss >> source >> target >> weight;
             add_edge(source, target, weight);
             add_edge(target, source, weight);
-            if (i % 1000 == 0) {
-                std::cout << "\r[DATA] Reading " << i << " edges" << std::flush;
+            if ((i + 1) % 1000 == 0 || i == n_edges - 1) {
+                bar.set_option(indicators::option::PostfixText{"[" + std::to_string(i + 1) + "/" + std::to_string(n_edges) + "]"});
+                bar.set_progress(i + 1);
             }
         }
-        std::cout << "\r[DATA] Reading " << n_edges << " edges" << std::endl;
+        bar.set_option(indicators::option::PrefixText{"[DATA] ✔ "});
+        bar.set_option(indicators::option::ShowSpinner{false});
+        bar.set_option(indicators::option::ShowPercentage{false});
+        bar.set_option(indicators::option::ShowElapsedTime{false});
+        bar.set_option(indicators::option::ShowRemainingTime{false});
+        bar.set_option(indicators::option::PostfixText{"Graph loaded " + std::to_string(n_edges) + "/" + std::to_string(n_edges) });
+        bar.mark_as_completed();
+        indicators::show_console_cursor(true);
     } else {
-        std::cout << "graph file not found!" << std::endl;
+        std::cout << "[DATA] graph file not found!" << std::endl;
         exit(1);
     }
     fin.close();
-
-    for(Edge e : graph){
-        std::cout << e.from << " " << e.to << " " << e.weight << std::endl;
-        break;
-    }
 }
 
 void Data::add_edge(int v1, int v2, float weight) {
@@ -76,8 +88,17 @@ void Data::load_vector(std::string& file){
         std::getline(fin, line);
         std::istringstream iss(line);
         iss >> n_vertices >> n_dims;
-        std::cout << "[DATA] Reading vectors from " << file << " with #V = " << n_vertices << " and #D = " << n_dims << std::endl;
+        std::cout << "[DATA] Load vectors from " << file << " with #V=" << n_vertices << " and #D=" << n_dims << std::endl;
         vec = new float[n_vertices * n_dims];
+
+        indicators::ProgressSpinner bar{
+            indicators::option::PrefixText{"[DATA] "},
+            indicators::option::MaxProgress{n_vertices},
+            indicators::option::SpinnerStates{std::vector<std::string>{"⠈", "⠐", "⠠", "⢀", "⡀", "⠄", "⠂", "⠁"}},
+            indicators::option::ShowElapsedTime{true},
+            indicators::option::ShowRemainingTime{true},
+        };
+        indicators::show_console_cursor(false);
         for (int i = 0; i < n_vertices; i++) {
             std::getline(fin, line);
             std::istringstream iss(line);
@@ -85,13 +106,21 @@ void Data::load_vector(std::string& file){
                 iss >> tmp;
                 vec[i * n_dims + j] = tmp;
             }
-            if (i % 1000 == 0) {
-                std::cout << "\r[DATA] Reading " << i << " vectors" << std::flush;
+            if ((i + 1) % 1000 == 0 || i == n_vertices - 1) {
+                bar.set_option(indicators::option::PostfixText{"[" + std::to_string(i + 1) + "/" + std::to_string(n_vertices) + "]"});
+                bar.set_progress(i + 1);
             }
         }
-        std::cout << "\r[DATA] Reading " << n_vertices << " vectors" << std::endl;
+        bar.set_option(indicators::option::PrefixText{"[DATA] ✔ "});
+        bar.set_option(indicators::option::ShowSpinner{false});
+        bar.set_option(indicators::option::ShowPercentage{false});
+        bar.set_option(indicators::option::ShowElapsedTime{false});
+        bar.set_option(indicators::option::ShowRemainingTime{false});
+        bar.set_option(indicators::option::PostfixText{"Vectors loaded " + std::to_string(n_vertices) + "/" + std::to_string(n_vertices)});
+        bar.mark_as_completed();
+        indicators::show_console_cursor(true);
     } else {
-        std::cout << "graph file not found!" << std::endl;
+        std::cout << "[DATA] vector file not found!" << std::endl;
         exit(1);
     }
     fin.close();
