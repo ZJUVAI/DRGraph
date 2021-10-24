@@ -152,6 +152,7 @@ void Data::dist2weight_thread(int id){
 
 void Data::build_multilevel(){
     multilevel_graphs[0]->build_index();
+    multilevel_graphs[0]->coarse();
 }
 
 void Data::load_vector(std::string& file){

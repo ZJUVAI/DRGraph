@@ -2,26 +2,26 @@
 
 Multilevel::Multilevel(){}
 
-Multilevel::Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight){
-    this->V = (*adj).size();
-    int E = 0;
-    for(auto item : *adj){
-        E += item.size();
-    }
-    this->E = E;
-    std::cout<< E << std::endl;
-    //this->adj = adj;
-    //this->weight = weight;
-    //for(int i = 0; i < this->V; i++){
-    //    (this->adj)[i].reserve((*adj)[i].size());
-    //    (this->weight)[i].reserve((*weight)[i].size());
-    //    for(int j = 0; j < (*adj)[i].size(); j++){
-    //        this->add_edge(i, (*adj)[i][j], (*weight)[i][j]);
-    //    }
-    //    std::vector<int>().swap((*adj)[i]);
-    //    std::vector<float>().swap((*weight)[i]);
-    //}
-}
+//Multilevel::Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight){
+//    this->V = (*adj).size();
+//    int E = 0;
+//    for(auto item : *adj){
+//        E += item.size();
+//    }
+//    this->E = E;
+//    std::cout<< E << std::endl;
+//    //this->adj = adj;
+//    //this->weight = weight;
+//    //for(int i = 0; i < this->V; i++){
+//    //    (this->adj)[i].reserve((*adj)[i].size());
+//    //    (this->weight)[i].reserve((*weight)[i].size());
+//    //    for(int j = 0; j < (*adj)[i].size(); j++){
+//    //        this->add_edge(i, (*adj)[i][j], (*weight)[i][j]);
+//    //    }
+//    //    std::vector<int>().swap((*adj)[i]);
+//    //    std::vector<float>().swap((*weight)[i]);
+//    //}
+//}
 
 Multilevel::~Multilevel(){
     for(int i = 0; i < this->V; i++){
@@ -59,6 +59,10 @@ void Multilevel::build_index(){
     for(int i = 0; i < V; i++)
         for(int j = 0; j < weight[i].size(); j++)
             masses[i] += weight[i][j];
+}
+
+void Multilevel::coarse(){
+    std::cout<< "ml coarse" << std::endl;
 }
 
 //void Multilevel::set_V(int V){

@@ -40,11 +40,7 @@ public:
     float* vec;
 
     // [DRGraph]
-    //std::vector<std::vector<int>>* adj;
-    //std::vector<std::vector<float>>* weight;
-    //float* vertice_weight;
     std::vector<Multilevel*> multilevel_graphs;
-
 
     // [Output] Embedding
     float* embedding;
@@ -61,8 +57,6 @@ public:
     void build_multilevel();
     
     void load_vector(std::string& file);
-    
-
 };
 
 #endif

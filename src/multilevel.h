@@ -17,10 +17,11 @@ private:
 
 public:
     Multilevel();
-    Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight);
+    //Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight);
     ~Multilevel();
     void resize(int V);
     void build_index();
+    void coarse();
     //void set_V(int V);
     int get_V();
     //void set_E(int E);
