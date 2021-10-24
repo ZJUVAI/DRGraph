@@ -1,12 +1,13 @@
 #ifndef DATA_CPP
 #define DATA_CPP
 
-#include "data.h"
 #include <map>
 #include <iostream>
 #include <malloc.h>
 #include <cfloat>
 #include <queue>
+
+#include "data.h"
 
 
 Data::Data() {}
@@ -34,6 +35,8 @@ void Data::load_graph(std::string& file){
         std::getline(fin, line);
         std::istringstream iss(line);
         iss >> n_vertices >> n_edges;
+        //Graph graph2(n_vertices, n_edges);
+        graph = new Graph(n_vertices, n_edges);
         std::cout << "[DATA] Loading graph edges from " << file << " with #V=" << n_vertices << " and #E=" << n_edges << std::endl;
 
         indicators::ProgressSpinner bar{
@@ -48,19 +51,19 @@ void Data::load_graph(std::string& file){
             std::getline(fin, line);
             std::istringstream iss(line);
             iss >> source >> target >> weight;
-            add_edge(source, target, weight);
-            add_edge(target, source, weight);
-            if ((i + 1) % 1000 == 0 || i == n_edges - 1) {
+            graph->add_edge(source, target);
+            graph->add_edge(target, source);
+            if ((i + 1) % 10000 == 0 || i == n_edges - 1) {
                 bar.set_option(indicators::option::PostfixText{"[" + std::to_string(i + 1) + "/" + std::to_string(n_edges) + "]"});
                 bar.set_progress(i + 1);
             }
         }
-        bar.set_option(indicators::option::PrefixText{"[DATA] ✔ "});
+        bar.set_option(indicators::option::PrefixText{"[DATA]"});
         bar.set_option(indicators::option::ShowSpinner{false});
         bar.set_option(indicators::option::ShowPercentage{false});
         bar.set_option(indicators::option::ShowElapsedTime{false});
         bar.set_option(indicators::option::ShowRemainingTime{false});
-        bar.set_option(indicators::option::PostfixText{"Graph loaded " + std::to_string(n_edges) + "/" + std::to_string(n_edges) });
+        bar.set_option(indicators::option::PostfixText{"Graph loaded ✔                                  "});
         bar.mark_as_completed();
         indicators::show_console_cursor(true);
     } else {
@@ -70,8 +73,85 @@ void Data::load_graph(std::string& file){
     fin.close();
 }
 
-void Data::add_edge(int v1, int v2, float weight) {
-    graph.push_back(Edge(v1, v2, -1, weight));
+void Data::graph2dist(int max_dist){
+    //Get adj and weight of fisrt level graph by bfs
+    auto multilevel = new Multilevel();
+    multilevel->resize(n_vertices);
+    graph->shortest_path_length(max_dist, multilevel->get_adj(), multilevel->get_weight());
+    delete graph;
+    multilevel_graphs.push_back(multilevel);
+}
+
+void Data::dist2weight(){
+    pthread_t threads[n_threads];
+    for(int i = 0; i < n_threads; i++ ){
+        int rc = pthread_create(&threads[i], NULL, Data::dist2weight_thread_caller, new pargs(this, i));
+    }
+    for(int i = 0; i < n_threads; i++ ){pthread_join(threads[i], NULL);}
+}
+
+
+void* Data::dist2weight_thread_caller(void* args){
+    pargs* arg = (pargs*)args;
+    Data* ptr = (Data*)arg->ptr;
+    int id = arg->id;
+    ptr->dist2weight_thread(id);
+    pthread_exit(NULL);
+}
+
+void Data::dist2weight_thread(int id){
+    int low = id * n_vertices / n_threads;
+    int high = (id + 1) * n_vertices / n_threads;
+    std::vector<std::vector<int>>& adj = multilevel_graphs[0]->get_adj();
+    std::vector<std::vector<float>>& weight = multilevel_graphs[0]->get_weight();
+    if(norm){
+        float beta, lo_beta, hi_beta, H, sum_weight, tmp;
+        for(int i = low; i < high; ++i){
+            beta = 1;
+            lo_beta = hi_beta = -1;
+            for(int iter = 0; iter < 200; ++iter){
+                H = 0;
+                sum_weight = FLT_MIN;
+                for(int j = 0; j < (adj)[i].size(); ++j){
+                    sum_weight += tmp = exp(-beta * (weight)[i][j]);
+                    H += beta * ((weight)[i][j] * tmp);
+                }
+                H = (H / sum_weight) + log(sum_weight);
+                if(fabs(H - log(perplexity)) < 1e-5){break;}
+            	if (H > log(perplexity)){
+                	lo_beta = beta;
+                	if (hi_beta < 0) beta *= 2; else beta = (beta + hi_beta) / 2;
+            	}else{
+                	hi_beta = beta;
+                	if (lo_beta < 0) beta /= 2; else beta = (lo_beta + beta) / 2;
+            	}
+            	if(beta > FLT_MAX) beta = FLT_MAX; 
+            }
+		}
+	}else{
+        float exparr[max_dist];
+        for (int i = 0; i <= max_dist; ++i) {
+            exparr[i] = exp(-i);//-i*i?                    
+        }
+        float sum_weight = 0;
+        for(int i = low; i < high; ++i){
+            float sum_i = 0;
+            for(int j = 0; j < (adj)[i].size(); ++j){
+                sum_i += (weight)[i][j] = exparr[(int)(weight)[i][j]];
+            }
+            //sum_weight += sum_i;
+            //vertice_weight[i] = sum_i;
+        }
+        //for(int i = low; i < high; ++i){
+        //    for(int j = 0; j < sim_adj[i].size(); ++j){
+        //        sim_weight[i][j] = sim_weight[i][j] * n_vertices / sum_weight;
+        //    }
+        //}    
+    }
+}
+
+void Data::build_multilevel(){
+    multilevel_graphs[0]->build_index();
 }
 
 void Data::load_vector(std::string& file){
@@ -111,12 +191,12 @@ void Data::load_vector(std::string& file){
                 bar.set_progress(i + 1);
             }
         }
-        bar.set_option(indicators::option::PrefixText{"[DATA] ✔ "});
+        bar.set_option(indicators::option::PrefixText{"[DATA]"});
         bar.set_option(indicators::option::ShowSpinner{false});
         bar.set_option(indicators::option::ShowPercentage{false});
         bar.set_option(indicators::option::ShowElapsedTime{false});
         bar.set_option(indicators::option::ShowRemainingTime{false});
-        bar.set_option(indicators::option::PostfixText{"Vectors loaded " + std::to_string(n_vertices) + "/" + std::to_string(n_vertices)});
+        bar.set_option(indicators::option::PostfixText{"Vectors loaded  ✔                           "});
         bar.mark_as_completed();
         indicators::show_console_cursor(true);
     } else {
@@ -125,7 +205,6 @@ void Data::load_vector(std::string& file){
     }
     fin.close();
 }
-
 
 
 #endif

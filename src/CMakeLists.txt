@@ -1,6 +1,6 @@
 #CXX
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -std=c++11 -fopenmp -fPIC  -funroll-loops -march=native")
-SET(CMAKE_BUILD_TYPE "Release")
+SET(CMAKE_BUILD_TYPE "Debug")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -msse -msse2 -msse3 -funroll-loops -std=c++11 -Ofast -march=native -ffast-math -fopenmp -fPIC")
 
 
@@ -20,7 +20,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 
 #include_directories("${PROJECT_SOURCE_DIR}/general")
 
-add_executable(Vis main.cpp data.cpp)
+add_executable(Vis main.cpp timer.cpp random.cpp data.cpp graph.cpp multilevel.cpp aliasSampler.cpp optimization.cpp)
 target_link_libraries(Vis ${Boost_LIBRARIES} pthread gsl gslcblas)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 
