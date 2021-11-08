@@ -169,7 +169,8 @@ void Data::load_vector(std::string& file){
         std::getline(fin, line);
         std::istringstream iss(line);
         iss >> n_vertices >> n_dims;
-        std::cout << "[DATA] Load vectors from " << file << " with #V=" << n_vertices << " and #D=" << n_dims << std::endl;
+        std::filesystem::path filepath = file;
+        std::cout << "[DATA] Load vectors from " << std::filesystem::absolute(filepath) << " with #V=" << n_vertices << " and #D=" << n_dims << std::endl;
         vec = new float[n_vertices * n_dims];
 
         indicators::ProgressSpinner bar{
