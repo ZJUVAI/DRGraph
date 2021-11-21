@@ -16,15 +16,11 @@ void timer::end(){
 }
 
 double timer::cpu_time() {
-    double cpu_time = 0;
-    cpu_time = (cpu_e - cpu_s) * 1.0 / CLOCKS_PER_SEC; //s
-    return cpu_time;
+    return (cpu_e - cpu_s) * 1.0 / CLOCKS_PER_SEC; //s
 }
 
 double timer::real_time() {
-    double real_time = 0;
-    real_time = std::chrono::duration_cast<std::chrono::milliseconds>(real_e - real_s).count() / 1000.0;
-    return real_time;
+    return std::chrono::duration_cast<std::chrono::milliseconds>(real_e - real_s).count() / 1000.0;
 }
 
 //timer& timer::operator+= (const timer &t) {

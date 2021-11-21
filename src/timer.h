@@ -2,10 +2,7 @@
 #define TIMER_H
 
 #include <ctime>
-#include <sys/timeb.h>
 #include <chrono>
-
-using namespace std;
 
 class timer{
 private:
@@ -17,8 +14,8 @@ public:
     void end();
     double cpu_time();
     double real_time();
-    timer &operator+= (const timer &t);
-    timer &operator- (const timer &t);
+    //timer &operator+= (const timer &t);
+    //timer &operator- (const timer &t);
 };
 
 #endif
