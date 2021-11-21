@@ -19,9 +19,12 @@ include_directories(${Boost_INCLUDE_DIRS})
 #Progress Bar
 include_directories("${PROJECT_SOURCE_DIR}/include")
 
+# Print Format
+#find_package(fmt)
+
 #include_directories("${PROJECT_SOURCE_DIR}/general")
 
 add_executable(Vis main.cpp timer.cpp random.cpp data.cpp graph.cpp multilevel.cpp aliasSampler.cpp optimization.cpp)
-target_link_libraries(Vis ${Boost_LIBRARIES} pthread gsl gslcblas)
+target_link_libraries(Vis ${Boost_LIBRARIES} pthread gsl gslcblas fmt::fmt)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 

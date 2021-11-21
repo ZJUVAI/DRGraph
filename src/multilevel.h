@@ -3,11 +3,16 @@
 
 #include <iostream>
 #include <vector>
+//#include <fmt/format.h>
+//#include <fmt/ranges.h>
+#include "random.h"
 
 class Multilevel{
-private:
+public:
     int V;
     int E;
+
+private:
     float* masses = nullptr;
     std::vector<std::vector<int>> adj;
     std::vector<std::vector<float>> weight;
@@ -22,9 +27,7 @@ public:
     void resize(int V);
     void build_index();
     void coarse();
-    //void set_V(int V);
     int get_V();
-    //void set_E(int E);
     int get_E();
     void add_edge(int from, int to);
     void add_edge(int from, int to, float weight);

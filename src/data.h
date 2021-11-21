@@ -1,13 +1,13 @@
 #ifndef DATA_H
 #define DATA_H
 
+#include <filesystem>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <fstream>
 #include <sstream>
 #include <string>
-#include <filesystem>
 #include <map>
 #include <set>
 #include <vector>
@@ -58,6 +58,8 @@ public:
     void build_multilevel();
     
     void load_vector(std::string& file);
+    
+
 };
 
 #endif

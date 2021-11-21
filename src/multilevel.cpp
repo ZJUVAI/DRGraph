@@ -63,6 +63,32 @@ void Multilevel::build_index(){
 
 void Multilevel::coarse(){
     std::cout<< "ml coarse" << std::endl;
+    int vertice_pool[this->V];
+    int vertice_pool_size = this->V;
+    bool vertice_visited[this->V];
+    //std::vector<int> vertice_pool;
+    //std::vector<bool> vertice_visited(this->V, false);
+    for(int i = 0; i < this->V; i++){
+        //vertice_pool.push_back(i);
+        vertice_pool[i] = i;
+        vertice_visited[i] = false;
+    }
+    //fmt::print("{}\n", vertice_pool);
+    //fmt::print("{}\n", vertice_visited);
+    
+    Random rnd;
+    while(vertice_pool_size > 0){
+        int choose = (int)floor(rnd.uniform() * vertice_pool_size);
+
+        // move the last element forward
+        // drop the choosen element 
+        vertice_pool[choose] = vertice_pool[vertice_pool_size-1];
+
+        //vertice_pool.erase(vertice_pool.begin() + choose);
+        //fmt::print("{}", vertice_pool.size());
+        vertice_pool_size--;
+    }
+    //fmt::print("{}\n", vertice_pool);
 }
 
 //void Multilevel::set_V(int V){
