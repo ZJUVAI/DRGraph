@@ -71,14 +71,19 @@ void Data::load_graph(std::string& file){
 
 void Data::graph2dist(int max_dist){
     //Get adj and weight of fisrt level graph by bfs
-    std::vector<std::vector<int>> adj(n_vertices, std::vector<int>);
-    std::vector<std::vector<float>> weight(n_vertices, std::vector<float>));
-    graph->shortest_path_length(max_dist, multilevel->get_adj(), multilevel->get_weight());
-    // create multilevel
-    auto multilevel = new Multilevel();
-    multilevel->resize(n_vertices);
+    std::vector<std::vector<int>> adj(n_vertices, std::vector<int>());
+    std::vector<std::vector<float>> weight(n_vertices, std::vector<float>());
+    graph->shortest_path_length(max_dist, adj, weight);
     delete graph;
-    multilevel_graphs.push_back(multilevel);
+    // create multilevel
+    auto multilevel = new Multilevel(0, n_vertices);
+    for(int i = 0; i < n_vertices; i++){
+        for(int j = 0; j < adj[i].size(); j++)
+            multilevel->add_edge(i, adj[i][j], weight[i][j]);
+        std::vector<int>().swap((adj)[i]);
+        std::vector<float>().swap((weight)[i]);
+    }
+    multilevels.push_back(multilevel);
 }
 
 void Data::dist2weight(){
@@ -88,7 +93,6 @@ void Data::dist2weight(){
     }
     for(int i = 0; i < n_threads; i++ ){pthread_join(threads[i], NULL);}
 }
-
 
 void* Data::dist2weight_thread_caller(void* args){
     pargs* arg = (pargs*)args;
@@ -101,8 +105,8 @@ void* Data::dist2weight_thread_caller(void* args){
 void Data::dist2weight_thread(int id){
     int low = id * n_vertices / n_threads;
     int high = (id + 1) * n_vertices / n_threads;
-    std::vector<std::vector<int>>& adj = multilevel_graphs[0]->get_adj();
-    std::vector<std::vector<float>>& weight = multilevel_graphs[0]->get_weight();
+    std::vector<std::vector<int>>& adj = multilevels[0]->get_adj();
+    std::vector<std::vector<float>>& weight = multilevels[0]->get_weight();
     if(norm){
         float beta, lo_beta, hi_beta, H, sum_weight, tmp;
         for(int i = low; i < high; ++i){
@@ -150,11 +154,22 @@ void Data::dist2weight_thread(int id){
 }
 
 void Data::build_multilevel(){
-    // multilevel_graphs[0]->build_index();
-    // multilevel_graphs.push_back(multilevel_graphs[0]->coarse());
-    // multilevel_graphs.push_back(multilevel_graphs[1]->coarse());
-    // multilevel_graphs.push_back(multilevel_graphs[2]->coarse());
-    // multilevel_graphs.push_back(multilevel_graphs[3]->coarse());
+    while(true){
+        int V = multilevels.back()->get_V();
+        int E = multilevels.back()->get_E();
+        int level = multilevels.back()->get_level(); 
+
+        auto nextlevel = multilevels.back()->coarse();
+        int next_V = nextlevel->get_V();
+        int next_E = nextlevel->get_E();
+        int next_level = nextlevel->get_level(); 
+
+        multilevels.push_back(nextlevel);
+        std::cout<< "[DATA.MultiLevel] Level " << level << "=>" << level + 1 << ": " << V << "," << E << "=>" << next_V << "," << next_E << std::endl;
+        if(next_V < 100 || next_V * 1.0 / V > 0.7){
+            break;
+        } 
+    };
 }
 
 void Data::load_vector(std::string& file){

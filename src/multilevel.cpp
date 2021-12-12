@@ -2,11 +2,12 @@
 
 Multilevel::Multilevel(){}
 
-Multilevel::Multilevel(int level){
+Multilevel::Multilevel(int level, int V){
+    this->level = level;
+    this->V = V;
     adj.resize(V);
     weight.resize(V);
-    // this->V = V;
-    this->level = level;
+    masses = new float[V]();
 }
 
 //Multilevel::Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight){
@@ -37,39 +38,33 @@ Multilevel::~Multilevel(){
     }
     std::vector<std::vector<int>>().swap(adj);
     std::vector<std::vector<float>>().swap(weight);
-    //delete[] masses;
+    delete[] masses;
     //delete nextlevel;
 }
 
-void Multilevel::resize(int V){
-    adj.resize(V);
-    weight.resize(V);
-    // this->V = V;
-}
+// void Multilevel::build_index(){
+//     this->V = adj.size();
+//     int E = 0;
+//     #pragma omp parallel for reduction (+:E)
+//     for(auto item : adj){
+//         E += item.size();
+//     }
+//     this->E = E;
 
-void Multilevel::build_index(){
-    this->V = adj.size();
-    int E = 0;
-    #pragma omp parallel for reduction (+:E)
-    for(auto item : adj){
-        E += item.size();
-    }
-    this->E = E;
+//     edges.reserve(E);
+//     for(int i = 0; i < V; i++){
+//         for(int j = 0; j < adj[i].size(); j++)
+//             edges.push_back(std::make_pair(i, adj[i][j]));
+//     }
 
-    edges.reserve(E);
-    for(int i = 0; i < V; i++){
-        for(int j = 0; j < adj[i].size(); j++)
-            edges.push_back(std::make_pair(i, adj[i][j]));
-    }
+//     masses = new float[V]();
+//     #pragma omp parallel for reduction(+:masses[:V])
+//     for(int i = 0; i < V; i++)
+//         for(int j = 0; j < weight[i].size(); j++)
+//             masses[i] += weight[i][j];
 
-    masses = new float[V]();
-    #pragma omp parallel for reduction(+:masses[:V])
-    for(int i = 0; i < V; i++)
-        for(int j = 0; j < weight[i].size(); j++)
-            masses[i] += weight[i][j];
-
-    this->level = 0;
-}
+//     this->level = 0;
+// }
 
 Multilevel* Multilevel::coarse(){
     // init
@@ -121,44 +116,51 @@ Multilevel* Multilevel::coarse(){
         V_new++;
     }
 
-    // new nextlevel graph
-    nextlevel = new Multilevel(level+1, V_new);
-    for(auto edge : this->edges){
-        int vertice_from = vertice_mapping[edge.first];
-        int vertice_to = vertice_mapping[edge.second];
-        if(vertice_from == vertice_to){
-            continue;
-        }else if (vertice_from < vertice_to){
-            nextlevel->add_edge(vertice_from, vertice_to);
-            nextlevel->add_edge(vertice_to, vertice_from);
-        } 
+    // new nextlevel
+    auto nextlevel = new Multilevel(level+1, V_new);
+    for(int i = 0; i < V; i++){
+        for(int j = 0; j < adj[i].size(); j++){
+            int vertice_from = vertice_mapping[i];
+            int vertice_to = vertice_mapping[adj[i][j]];
+            if(vertice_from == vertice_to){
+                continue;
+            }else if (vertice_from < vertice_to){
+                nextlevel->add_edge(vertice_from, vertice_to);
+                nextlevel->add_edge(vertice_to, vertice_from);
+            } 
+        }
     }
-    
-    std::cout<< "[DATA.MultiLevel] Level " << level << ": " << this->V << "," << this->E << "=>" << nextlevel->V << "," << nextlevel->E << std::endl;
     return nextlevel;
 }
 
 int Multilevel::get_V(){
-    return adj.size();
+    return V;
 }
 
 int Multilevel::get_E(){
-    return edges.size();
+    return E;
+}
+
+int Multilevel::get_level(){
+    return level;
 }
 
 void Multilevel::add_edge(int from, int to){
     if(std::find(adj[from].begin(), adj[from].end(), to) == adj[from].end()){
         adj[from].push_back(to);
-        edges.push_back(std::make_pair(from, to));
+        // edges.push_back(std::make_pair(from, to));
         E++;
     }
 }
 
 void Multilevel::add_edge(int from, int to, float weight){
-    this->adj[from].push_back(to);
-    this->weight[from].push_back(weight);
-    this->edges.push_back(std::make_pair(from, to));
-    //(*this->weight)[from].push_back(weight);
+    if(std::find(adj[from].begin(), adj[from].end(), to) == adj[from].end()){
+        this->adj[from].push_back(to);
+        this->weight[from].push_back(weight);
+        // this->edges.push_back(std::make_pair(from, to));
+        this->masses[from] += weight;
+        E++;
+    }
 }
 
 std::vector<int>& Multilevel::get_neighbors(int vertice){

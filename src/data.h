@@ -41,7 +41,7 @@ public:
     float* vec;
 
     // [DRGraph]
-    std::vector<Multilevel*> multilevel_graphs;
+    std::vector<Multilevel*> multilevels;
 
     // [Output] Embedding
     float* embedding;
