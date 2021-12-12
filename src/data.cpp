@@ -15,10 +15,6 @@ Data::Data() {}
 Data::~Data() {
 }
 
-Data::Data(const Data &d) {
-}
-
-
 void Data::load_graph(std::string& file){
     /*
     vertices(n) edges(m)
@@ -75,9 +71,12 @@ void Data::load_graph(std::string& file){
 
 void Data::graph2dist(int max_dist){
     //Get adj and weight of fisrt level graph by bfs
+    std::vector<std::vector<int>> adj(n_vertices, std::vector<int>);
+    std::vector<std::vector<float>> weight(n_vertices, std::vector<float>));
+    graph->shortest_path_length(max_dist, multilevel->get_adj(), multilevel->get_weight());
+    // create multilevel
     auto multilevel = new Multilevel();
     multilevel->resize(n_vertices);
-    graph->shortest_path_length(max_dist, multilevel->get_adj(), multilevel->get_weight());
     delete graph;
     multilevel_graphs.push_back(multilevel);
 }
@@ -151,8 +150,11 @@ void Data::dist2weight_thread(int id){
 }
 
 void Data::build_multilevel(){
-    multilevel_graphs[0]->build_index();
-    multilevel_graphs[0]->coarse();
+    // multilevel_graphs[0]->build_index();
+    // multilevel_graphs.push_back(multilevel_graphs[0]->coarse());
+    // multilevel_graphs.push_back(multilevel_graphs[1]->coarse());
+    // multilevel_graphs.push_back(multilevel_graphs[2]->coarse());
+    // multilevel_graphs.push_back(multilevel_graphs[3]->coarse());
 }
 
 void Data::load_vector(std::string& file){

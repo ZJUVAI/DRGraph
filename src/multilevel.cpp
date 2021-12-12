@@ -2,6 +2,13 @@
 
 Multilevel::Multilevel(){}
 
+Multilevel::Multilevel(int level){
+    adj.resize(V);
+    weight.resize(V);
+    // this->V = V;
+    this->level = level;
+}
+
 //Multilevel::Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight){
 //    this->V = (*adj).size();
 //    int E = 0;
@@ -37,6 +44,7 @@ Multilevel::~Multilevel(){
 void Multilevel::resize(int V){
     adj.resize(V);
     weight.resize(V);
+    // this->V = V;
 }
 
 void Multilevel::build_index(){
@@ -59,61 +67,97 @@ void Multilevel::build_index(){
     for(int i = 0; i < V; i++)
         for(int j = 0; j < weight[i].size(); j++)
             masses[i] += weight[i][j];
+
+    this->level = 0;
 }
 
-void Multilevel::coarse(){
-    std::cout<< "ml coarse" << std::endl;
-    int vertice_pool[this->V];
-    int vertice_pool_size = this->V;
-    bool vertice_visited[this->V];
-    //std::vector<int> vertice_pool;
-    //std::vector<bool> vertice_visited(this->V, false);
-    for(int i = 0; i < this->V; i++){
-        //vertice_pool.push_back(i);
+Multilevel* Multilevel::coarse(){
+    // init
+    int V_new = 0;
+    vertice_mapping.resize(V);
+    std::vector<int> vertice_pool(V, 0); // in random order
+    int vertice_pool_size = V;
+    std::vector<int> vertice_pool_index(V, 0); // vector => index in pool
+    std::vector<bool> vertice_visited(V, false);
+    //std::vector<int> vertice_mapping(V, -1); // index in the next coarser graph
+    for(int i = 0; i < V; i++){
         vertice_pool[i] = i;
-        vertice_visited[i] = false;
+        vertice_pool_index[i] = i;
+        vertice_mapping[i] = -1;
     }
-    //fmt::print("{}\n", vertice_pool);
-    //fmt::print("{}\n", vertice_visited);
     
     Random rnd;
-    while(vertice_pool_size > 0){
-        int choose = (int)floor(rnd.uniform() * vertice_pool_size);
-
-        // move the last element forward
-        // drop the choosen element 
-        vertice_pool[choose] = vertice_pool[vertice_pool_size-1];
-
-        //vertice_pool.erase(vertice_pool.begin() + choose);
-        //fmt::print("{}", vertice_pool.size());
+    auto remove_vertice_from_pool = [&] (int choosen_pool_index) {
+        int choosen_vertice = vertice_pool[choosen_pool_index];
+        // set choosen vertice as visited
+        vertice_visited[choosen_vertice] = true;
+        // swap the last element forward and remove the choosen element
+        // also update pool index
+        int last_vertice = vertice_pool[vertice_pool_size-1]; 
+        vertice_pool[choosen_pool_index] = last_vertice;
+        vertice_pool_index[last_vertice] = choosen_pool_index;
+        vertice_pool[vertice_pool_size-1] = choosen_vertice;
+        vertice_pool_index[choosen_vertice] = vertice_pool_size-1;
+        // remove the choosen element by shinking pool size -- 
         vertice_pool_size--;
+    };
+    while(vertice_pool_size > 0){
+        int choosen_pool_index = (int)floor(rnd.uniform() * vertice_pool_size);
+        int vertice = vertice_pool[choosen_pool_index];
+        //remove choosen vertice from pool
+        remove_vertice_from_pool(choosen_pool_index);
+        //set new index
+        vertice_mapping[vertice] = V_new;
+        // for neighbors of the choosen vertice
+        for(auto neighbor : get_neighbors(vertice)){
+            if(vertice_visited[neighbor] == false){
+                //remove choosen vertice from pool
+                choosen_pool_index = vertice_pool_index[neighbor];
+                remove_vertice_from_pool(choosen_pool_index);
+                // set new index
+                vertice_mapping[neighbor] = V_new;
+            }
+        }
+        V_new++;
     }
-    //fmt::print("{}\n", vertice_pool);
-}
 
-//void Multilevel::set_V(int V){
-//    this->V = V;
-//}
+    // new nextlevel graph
+    nextlevel = new Multilevel(level+1, V_new);
+    for(auto edge : this->edges){
+        int vertice_from = vertice_mapping[edge.first];
+        int vertice_to = vertice_mapping[edge.second];
+        if(vertice_from == vertice_to){
+            continue;
+        }else if (vertice_from < vertice_to){
+            nextlevel->add_edge(vertice_from, vertice_to);
+            nextlevel->add_edge(vertice_to, vertice_from);
+        } 
+    }
+    
+    std::cout<< "[DATA.MultiLevel] Level " << level << ": " << this->V << "," << this->E << "=>" << nextlevel->V << "," << nextlevel->E << std::endl;
+    return nextlevel;
+}
 
 int Multilevel::get_V(){
-    return V;
+    return adj.size();
 }
 
-//void Multilevel::set_E(int E){
-//    this->E = E;
-//}
-
 int Multilevel::get_E(){
-    return E;
+    return edges.size();
 }
 
 void Multilevel::add_edge(int from, int to){
-    adj[from].push_back(to);
+    if(std::find(adj[from].begin(), adj[from].end(), to) == adj[from].end()){
+        adj[from].push_back(to);
+        edges.push_back(std::make_pair(from, to));
+        E++;
+    }
 }
 
 void Multilevel::add_edge(int from, int to, float weight){
     this->adj[from].push_back(to);
     this->weight[from].push_back(weight);
+    this->edges.push_back(std::make_pair(from, to));
     //(*this->weight)[from].push_back(weight);
 }
 

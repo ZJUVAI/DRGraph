@@ -18,8 +18,6 @@
 namespace  bpo = boost::program_options;
 
 
-
-
 std::string input, output;
 std::string method;
 
