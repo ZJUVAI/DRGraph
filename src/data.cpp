@@ -16,6 +16,72 @@ Data::~Data() {
 }
 
 void Data::load_graph(std::string& file){
+    std::string extension = file.substr(file.find_last_of(".") + 1);
+    if(extension == "txt"){
+        load_graph_from_txt(file);
+    }else if(extension == "graph"){
+        std::ifstream infile(file);
+        std::string file_txt = file.substr(0, file.rfind(".")) + ".txt";
+        if(!infile.good()){
+            save_graph_txt_as_binary(file_txt, file);
+        }
+        load_graph_from_binary(file);
+    }
+}
+
+void Data::save_graph_txt_as_binary(std::string& infile, std::string& outfile){
+    int source, target;
+    float weight;
+    std::ifstream fin(infile.c_str());
+    std::string line;
+    if (fin) {
+        std::getline(fin, line);
+        std::istringstream iss(line);
+        iss >> n_vertices >> n_edges;
+        std::cout << "[DATA] Saving graph from " << infile << " with #V=" << n_vertices << " and #E=" << n_edges << " to " << outfile << std::endl ;
+
+        std::ofstream fout(outfile, std::ios::binary);
+        fout.write(reinterpret_cast<const char*>(&n_vertices), sizeof(n_vertices));
+        fout.write(reinterpret_cast<const char*>(&n_edges), sizeof(n_edges));
+
+        indicators::ProgressSpinner bar{
+            indicators::option::PrefixText{"[DATA] "},
+            indicators::option::MaxProgress{n_edges},
+            indicators::option::SpinnerStates{std::vector<std::string>{"⠈", "⠐", "⠠", "⢀", "⡀", "⠄", "⠂", "⠁"}},
+            indicators::option::ShowElapsedTime{true},
+            indicators::option::ShowRemainingTime{true},
+        };
+        indicators::show_console_cursor(false);
+
+        for (int i = 0; i < n_edges; i++) {
+            std::getline(fin, line);
+            std::istringstream iss(line);
+            iss >> source >> target >> weight;
+            fout.write(reinterpret_cast<const char*>(&source), sizeof(source));
+            fout.write(reinterpret_cast<const char*>(&target), sizeof(target));
+            if ((i + 1) % 10000 == 0 || i == n_edges - 1) {
+                bar.set_option(indicators::option::PostfixText{"[" + std::to_string(i + 1) + "/" + std::to_string(n_edges) + "]"});
+                bar.set_progress(i + 1);
+            }
+        }
+        fout.close();
+
+        bar.set_option(indicators::option::PrefixText{"[DATA]"});
+        bar.set_option(indicators::option::ShowSpinner{false});
+        bar.set_option(indicators::option::ShowPercentage{false});
+        bar.set_option(indicators::option::ShowElapsedTime{false});
+        bar.set_option(indicators::option::ShowRemainingTime{false});
+        bar.set_option(indicators::option::PostfixText{"Graph saved ✔                                  "});
+        bar.mark_as_completed();
+        indicators::show_console_cursor(true);
+    } else {
+        std::cout << "[DATA] graph file not found!" << std::endl;
+        exit(1);
+    }
+    fin.close();
+}
+
+void Data::load_graph_from_txt(std::string& file){
     /*
     vertices(n) edges(m)
     fromNode_1 toNode_1 weight_1
@@ -54,6 +120,57 @@ void Data::load_graph(std::string& file){
                 bar.set_progress(i + 1);
             }
         }
+        bar.set_option(indicators::option::PrefixText{"[DATA]"});
+        bar.set_option(indicators::option::ShowSpinner{false});
+        bar.set_option(indicators::option::ShowPercentage{false});
+        bar.set_option(indicators::option::ShowElapsedTime{false});
+        bar.set_option(indicators::option::ShowRemainingTime{false});
+        bar.set_option(indicators::option::PostfixText{"Graph loaded ✔                                  "});
+        bar.mark_as_completed();
+        indicators::show_console_cursor(true);
+    } else {
+        std::cout << "[DATA] graph file not found!" << std::endl;
+        exit(1);
+    }
+    fin.close();
+}
+
+void Data::load_graph_from_binary(std::string& file){
+    /*
+    int: vertices(n) 
+    int: edges(m)
+    [
+        int: fromNode_1 
+        int: fromNode_2 
+    ] X edges(m) 
+    */    
+    std::ifstream fin(file.c_str(), std::ios::binary);
+    if (fin) {
+        fin.read(reinterpret_cast<char*>(&n_vertices), sizeof(n_vertices));
+        fin.read(reinterpret_cast<char*>(&n_edges), sizeof(n_edges));
+        graph = new Graph(n_vertices, n_edges);
+        std::cout << "[DATA] Loading graph edges from " << file << " with #V=" << n_vertices << " and #E=" << n_edges << std::endl;
+
+        indicators::ProgressSpinner bar{
+            indicators::option::PrefixText{"[DATA] "},
+            indicators::option::MaxProgress{n_edges},
+            indicators::option::SpinnerStates{std::vector<std::string>{"⠈", "⠐", "⠠", "⢀", "⡀", "⠄", "⠂", "⠁"}},
+            indicators::option::ShowElapsedTime{true},
+            indicators::option::ShowRemainingTime{true},
+        };
+        indicators::show_console_cursor(false);
+
+        std::vector<int> data(n_edges*2);
+        fin.read(reinterpret_cast<char*>(&data[0]), n_edges*2*sizeof(int));
+        for (int i = 0; i < n_edges; i++) {
+            graph->add_edge(data[i*2], data[i*2+1]);
+            graph->add_edge(data[i*2+1], data[i*2]);
+            if ((i + 1) % 10000 == 0 || i == n_edges - 1) {
+                bar.set_option(indicators::option::PostfixText{"[" + std::to_string(i + 1) + "/" + std::to_string(n_edges) + "]"});
+                bar.set_progress(i + 1);
+            }
+        }
+
         bar.set_option(indicators::option::PrefixText{"[DATA]"});
         bar.set_option(indicators::option::ShowSpinner{false});
         bar.set_option(indicators::option::ShowPercentage{false});
@@ -163,7 +280,7 @@ void Data::build_multilevel(){
         int next_V = nextlevel->get_V();
         int next_E = nextlevel->get_E();
         int next_level = nextlevel->get_level(); 
-
+ 
         multilevels.push_back(nextlevel);
         std::cout<< "[DATA.MultiLevel] Level " << level << "=>" << level + 1 << ": " << V << "," << E << "=>" << next_V << "," << next_E << std::endl;
         if(next_V < 100 || next_V * 1.0 / V > 0.7){

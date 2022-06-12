@@ -12,7 +12,6 @@ class Graph{
     private:
         int n_vertices;
         int n_edges;
-        //vector<int>* adjlist;
         vector<vector<int>> adjlist;
 
     public:

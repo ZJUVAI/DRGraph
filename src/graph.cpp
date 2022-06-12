@@ -10,9 +10,7 @@ Graph::Graph(int n_vertices, int n_edges): adjlist(n_vertices){
 }
 
 Graph::~Graph(){
-    //vector<vector<int>>().swap(adjlist);
-    //vector<vector<int>>().swap(SPadj);
-    //vector<vector<int>>().swap(SPdist);
+    vector<vector<int>>().swap(adjlist);
 }
 
 int Graph::V(){

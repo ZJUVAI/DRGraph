@@ -6,7 +6,7 @@ Multilevel::Multilevel(int level, int V){
     this->level = level;
     this->V = V;
     adj.resize(V);
-    weight.resize(V);
+    weights.resize(V);
     masses = new float[V]();
 }
 
@@ -34,10 +34,10 @@ Multilevel::Multilevel(int level, int V){
 Multilevel::~Multilevel(){
     for(int i = 0; i < this->V; i++){
         std::vector<int>().swap((adj)[i]);
-        std::vector<float>().swap((weight)[i]);
+        std::vector<float>().swap((weights)[i]);
     }
     std::vector<std::vector<int>>().swap(adj);
-    std::vector<std::vector<float>>().swap(weight);
+    std::vector<std::vector<float>>().swap(weights);
     delete[] masses;
     //delete nextlevel;
 }
@@ -156,8 +156,9 @@ void Multilevel::add_edge(int from, int to){
 void Multilevel::add_edge(int from, int to, float weight){
     if(std::find(adj[from].begin(), adj[from].end(), to) == adj[from].end()){
         this->adj[from].push_back(to);
-        this->weight[from].push_back(weight);
-        // this->edges.push_back(std::make_pair(from, to));
+        this->weights[from].push_back(weight);
+        this->edges.push_back(std::make_pair(from, to));
+        // this->edge_weights.push_back(weight);
         this->masses[from] += weight;
         E++;
     }
@@ -172,7 +173,7 @@ std::vector<std::vector<int>>& Multilevel::get_adj(){
 }
 
 std::vector<std::vector<float>>& Multilevel::get_weight(){
-    return weight;
+    return weights;
 }
 
 

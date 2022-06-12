@@ -14,8 +14,9 @@ private:
     int V = 0;
     int E = 0;
     std::vector<std::vector<int>> adj;
-    std::vector<std::vector<float>> weight;
+    std::vector<std::vector<float>> weights;
     std::vector<std::pair<int, int>> edges;
+    // std::vector<float> edge_weights;
     // index from this graph to next graph, e.g., [1,N] => [1,n]
     std::vector<int> vertice_mapping;
     float* masses = nullptr;

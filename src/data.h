@@ -32,6 +32,9 @@ private:
     bool norm = false;
     int max_dist = 1;
 	float perplexity = 50;
+    void load_graph_from_binary(std::string& file);
+    void load_graph_from_txt(std::string& file);
+    void save_graph_txt_as_binary(std::string& infile, std::string& outfile);
 public:
     // [Input] Graph data
     Graph* graph;
