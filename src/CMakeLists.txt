@@ -25,7 +25,7 @@ include_directories("${PROJECT_SOURCE_DIR}/include")
 
 #include_directories("${PROJECT_SOURCE_DIR}/general")
 
-add_executable(Vis main.cpp timer.cpp random.cpp data.cpp graph.cpp multilevel.cpp aliasSampler.cpp optimization.cpp)
+add_executable(Vis main.cpp timer.cpp random.cpp data.cpp graph.cpp probabilistic_graph.cpp aliasSampler.cpp optimization.cpp)
 target_link_libraries(Vis ${Boost_LIBRARIES} pthread gsl gslcblas)
 SET(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR})
 

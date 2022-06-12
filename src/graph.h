@@ -4,7 +4,7 @@
 #include <vector>
 #include <queue>
 #include <unordered_map>
-#include "multilevel.h"
+#include "probabilistic_graph.h"
 
 using namespace std;
 

@@ -30,8 +30,6 @@ vector<int>& Graph::neighbors(int vertice){
 }
 
 void Graph::shortest_path_length(int max_dist, vector<vector<int>>& sim_adj, vector<vector<float>>& sim_dist){
-    //vector<int>* adj = new vector<int>[n_vertices];
-    //vector<int>* dist = new vector<int>[n_vertices];
     #pragma omp parallel for
     for(int i = 0; i < n_vertices; i++){
         BFS(i, max_dist, sim_adj[i], sim_dist[i]);

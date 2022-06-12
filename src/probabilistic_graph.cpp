@@ -1,8 +1,8 @@
-#include "multilevel.h"
+#include "probabilistic_graph.h"
 
-Multilevel::Multilevel(){}
+ProbabilisticGraph::ProbabilisticGraph(){}
 
-Multilevel::Multilevel(int level, int V){
+ProbabilisticGraph::ProbabilisticGraph(int level, int V){
     this->level = level;
     this->V = V;
     adj.resize(V);
@@ -10,28 +10,7 @@ Multilevel::Multilevel(int level, int V){
     masses = new float[V]();
 }
 
-//Multilevel::Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight){
-//    this->V = (*adj).size();
-//    int E = 0;
-//    for(auto item : *adj){
-//        E += item.size();
-//    }
-//    this->E = E;
-//    std::cout<< E << std::endl;
-//    //this->adj = adj;
-//    //this->weight = weight;
-//    //for(int i = 0; i < this->V; i++){
-//    //    (this->adj)[i].reserve((*adj)[i].size());
-//    //    (this->weight)[i].reserve((*weight)[i].size());
-//    //    for(int j = 0; j < (*adj)[i].size(); j++){
-//    //        this->add_edge(i, (*adj)[i][j], (*weight)[i][j]);
-//    //    }
-//    //    std::vector<int>().swap((*adj)[i]);
-//    //    std::vector<float>().swap((*weight)[i]);
-//    //}
-//}
-
-Multilevel::~Multilevel(){
+ProbabilisticGraph::~ProbabilisticGraph(){
     for(int i = 0; i < this->V; i++){
         std::vector<int>().swap((adj)[i]);
         std::vector<float>().swap((weights)[i]);
@@ -42,31 +21,7 @@ Multilevel::~Multilevel(){
     //delete nextlevel;
 }
 
-// void Multilevel::build_index(){
-//     this->V = adj.size();
-//     int E = 0;
-//     #pragma omp parallel for reduction (+:E)
-//     for(auto item : adj){
-//         E += item.size();
-//     }
-//     this->E = E;
-
-//     edges.reserve(E);
-//     for(int i = 0; i < V; i++){
-//         for(int j = 0; j < adj[i].size(); j++)
-//             edges.push_back(std::make_pair(i, adj[i][j]));
-//     }
-
-//     masses = new float[V]();
-//     #pragma omp parallel for reduction(+:masses[:V])
-//     for(int i = 0; i < V; i++)
-//         for(int j = 0; j < weight[i].size(); j++)
-//             masses[i] += weight[i][j];
-
-//     this->level = 0;
-// }
-
-Multilevel* Multilevel::coarse(){
+ProbabilisticGraph* ProbabilisticGraph::coarse(){
     // init
     int V_new = 0;
     vertice_mapping.resize(V);
@@ -117,7 +72,7 @@ Multilevel* Multilevel::coarse(){
     }
 
     // new nextlevel
-    auto nextlevel = new Multilevel(level+1, V_new);
+    auto nextlevel = new ProbabilisticGraph(level+1, V_new);
     for(int i = 0; i < V; i++){
         for(int j = 0; j < adj[i].size(); j++){
             int vertice_from = vertice_mapping[i];
@@ -133,19 +88,19 @@ Multilevel* Multilevel::coarse(){
     return nextlevel;
 }
 
-int Multilevel::get_V(){
+int ProbabilisticGraph::get_V(){
     return V;
 }
 
-int Multilevel::get_E(){
+int ProbabilisticGraph::get_E(){
     return E;
 }
 
-int Multilevel::get_level(){
+int ProbabilisticGraph::get_level(){
     return level;
 }
 
-void Multilevel::add_edge(int from, int to){
+void ProbabilisticGraph::add_edge(int from, int to){
     if(std::find(adj[from].begin(), adj[from].end(), to) == adj[from].end()){
         adj[from].push_back(to);
         // edges.push_back(std::make_pair(from, to));
@@ -153,7 +108,7 @@ void Multilevel::add_edge(int from, int to){
     }
 }
 
-void Multilevel::add_edge(int from, int to, float weight){
+void ProbabilisticGraph::add_edge(int from, int to, float weight){
     if(std::find(adj[from].begin(), adj[from].end(), to) == adj[from].end()){
         this->adj[from].push_back(to);
         this->weights[from].push_back(weight);
@@ -164,16 +119,18 @@ void Multilevel::add_edge(int from, int to, float weight){
     }
 }
 
-std::vector<int>& Multilevel::get_neighbors(int vertice){
+std::vector<int>& ProbabilisticGraph::get_neighbors(int vertice){
 	return this->adj[vertice];
 }
 
-std::vector<std::vector<int>>& Multilevel::get_adj(){
+std::vector<std::vector<int>>& ProbabilisticGraph::get_adj(){
     return adj;
 }
 
-std::vector<std::vector<float>>& Multilevel::get_weight(){
+std::vector<std::vector<float>>& ProbabilisticGraph::get_weight(){
     return weights;
 }
 
-
+float* ProbabilisticGraph::get_masses(){
+    return masses;
+}

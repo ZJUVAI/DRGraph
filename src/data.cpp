@@ -186,21 +186,37 @@ void Data::load_graph_from_binary(std::string& file){
     fin.close();
 }
 
-void Data::graph2dist(int max_dist){
-    //Get adj and weight of fisrt level graph by bfs
-    std::vector<std::vector<int>> adj(n_vertices, std::vector<int>());
-    std::vector<std::vector<float>> weight(n_vertices, std::vector<float>());
-    graph->shortest_path_length(max_dist, adj, weight);
-    delete graph;
-    // create multilevel
-    auto multilevel = new Multilevel(0, n_vertices);
+void Data::to_probabilistic_graph(std::string method){
+    // intermediate representation
+    // std::vector<std::vector<int>> adj(n_vertices, std::vector<int>());
+    // std::vector<std::vector<float>> weight(n_vertices, std::vector<float>()); 
+    // init
+    adj.resize(n_vertices);
+    weight.resize(n_vertices);
+    // Step 1: get dist
+    if (method=="GL"){
+        graph2dist(max_dist);
+    }else if (method=="DR"){
+    }
+    // Step 2: dist => probabilistic weight
+    dist2weight();
+    // Step 3: create probabilistic graph
+    auto prob_graph = new ProbabilisticGraph(0, n_vertices);
     for(int i = 0; i < n_vertices; i++){
         for(int j = 0; j < adj[i].size(); j++)
-            multilevel->add_edge(i, adj[i][j], weight[i][j]);
+            prob_graph->add_edge(i, adj[i][j], weight[i][j]);
         std::vector<int>().swap((adj)[i]);
         std::vector<float>().swap((weight)[i]);
     }
-    multilevels.push_back(multilevel);
+    multilevels.push_back(prob_graph);
+    // delete intermediate representation
+    std::vector<std::vector<int>>().swap(adj);
+    std::vector<std::vector<float>>().swap(weight);
+}
+
+void Data::graph2dist(int max_dist){
+    graph->shortest_path_length(max_dist, adj, weight);
+    delete graph;  
 }
 
 void Data::dist2weight(){
@@ -222,8 +238,6 @@ void* Data::dist2weight_thread_caller(void* args){
 void Data::dist2weight_thread(int id){
     int low = id * n_vertices / n_threads;
     int high = (id + 1) * n_vertices / n_threads;
-    std::vector<std::vector<int>>& adj = multilevels[0]->get_adj();
-    std::vector<std::vector<float>>& weight = multilevels[0]->get_weight();
     if(norm){
         float beta, lo_beta, hi_beta, H, sum_weight, tmp;
         for(int i = low; i < high; ++i){
@@ -279,9 +293,8 @@ void Data::build_multilevel(){
         auto nextlevel = multilevels.back()->coarse();
         int next_V = nextlevel->get_V();
         int next_E = nextlevel->get_E();
-        int next_level = nextlevel->get_level(); 
- 
         multilevels.push_back(nextlevel);
+        
         std::cout<< "[DATA.MultiLevel] Level " << level << "=>" << level + 1 << ": " << V << "," << E << "=>" << next_V << "," << next_E << std::endl;
         if(next_V < 100 || next_V * 1.0 / V > 0.7){
             break;

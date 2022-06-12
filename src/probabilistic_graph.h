@@ -1,5 +1,5 @@
-#ifndef MULTILEVEL_h
-#define MULTILEVEL_h
+#ifndef PROBABILISTIC_GRAPH_h
+#define PROBABILISTIC_GRAPH_h
 
 #include <iostream>
 #include <vector>
@@ -8,7 +8,7 @@
 //#include <fmt/ranges.h>
 #include "random.h"
 
-class Multilevel{
+class ProbabilisticGraph{
 private:
     int level = 0;
     int V = 0;
@@ -23,19 +23,20 @@ private:
     // Multilevel* nextlevel = nullptr;
     
 public:
-    Multilevel();
-    Multilevel(int level, int V);
+    ProbabilisticGraph();
+    ProbabilisticGraph(int level, int V);
     //Multilevel(std::vector<std::vector<int>>* adj, std::vector<std::vector<float>>* weight);
-    ~Multilevel();
+    ~ProbabilisticGraph();
     int get_V();
     int get_E();
     int get_level();
     void add_edge(int from, int to);
     void add_edge(int from, int to, float weight);
-    Multilevel* coarse();
+    ProbabilisticGraph* coarse();
     std::vector<int>& get_neighbors(int vertice);
     std::vector<std::vector<int>>& get_adj();
     std::vector<std::vector<float>>& get_weight();
+    float* get_masses();
 };
 
 #endif 

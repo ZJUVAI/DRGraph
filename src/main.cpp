@@ -117,31 +117,35 @@ int main(int argc, char** argv){
         data.load_graph(input);
         t.end();
         std::cout << "[DATA.Loading] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
-        std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;
-        
-        t.start();
-        data.graph2dist();
-        // data.dist2weight();
-        t.end();
-        std::cout << "[DATA.Graph2Weight] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
-        std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;
-        
-        // t.start();
-        // data.build_multilevel();
-        // t.end();
-        // std::cout << "[DATA.MultiLevel] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
+        std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;        
+
     }else if(method == "DR"){
         data.load_vector(input);
     }
     
+    t.start();
+    data.to_probabilistic_graph(method);
+    t.end();
+    std::cout << "[DATA.ToProbabilisticGraph] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
+    std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;
+
+    t.start();
+    data.build_multilevel();
+    t.end();
+    std::cout << "[DATA.MultiLevel] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
+    std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;
+    
     //Optimization
-    // Optimization opt;
-    // std::cout<< data.multilevels.size() <<std::endl;
-    // opt.init_edge_sampler(data.multilevels[0]->get_E(), data.multilevels[0]->get_weight());
-    // std::cout << opt.edge_sampler->sample(0.1, 0.1) << std::endl;
-    // //opt.init_vertice_sampler(data.n_vertices, data.vertice_weight);
-    // //std::cout << opt.vertice_sampler->sample(0.1, 0.1) << std::endl;
-    // //opt.run();
+    Optimization optim;
+    t.start();
+    optim.init_edge_sampler(data.multilevels[0]->get_E(), data.multilevels[0]->get_weight());
+    // std::cout << optim.edge_sampler->sample(0.1, 0.1) << std::endl;
+    optim.init_vertice_sampler(data.multilevels[0]->get_V(), data.multilevels[0]->get_masses());
+    // std::cout << opt.vertice_sampler->sample(0.1, 0.1) << std::endl;
+    //opt.run();
+    t.end();
+    std::cout << "[OPTIMIZATION] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
+    std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;
 
     // int n = 5;
     // float weight[n]{0.1, 0.2, 0.3, 0.4, 0.5};
