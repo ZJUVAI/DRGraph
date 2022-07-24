@@ -39,9 +39,10 @@ double mem_usage() {
    return resident_set;
 }
 
-
+// Params
 std::string input, output;
 std::string method;
+int n_dims;
 
 bool parse_params(int argc, char ** argv) {
     bpo::options_description generic("Generic options");
@@ -56,6 +57,8 @@ bool parse_params(int argc, char ** argv) {
     bpo::options_description algo("Algorithms options");
     algo.add_options()
         ("method", bpo::value<std::string>(&method)->required(), "Choose method from GL or DR");
+    algo.add_options()
+        ("n_dims", bpo::value<int>(&n_dims)->default_value(2), "Dimension of the embedded space. Default 2.");
     bpo::options_description opts("Options");
     opts.add(generic).add(file).add(algo);
 
@@ -104,6 +107,8 @@ void *PrintHello(void* argv) {
 int main(int argc, char** argv){
     timer t;
 
+
+
     // Load params
     parse_params(argc, argv);
     std::cout << "[ARGS] input: " << input << std::endl;
@@ -111,22 +116,21 @@ int main(int argc, char** argv){
     std::cout << "[ARGS] method: " << method << std::endl;
   
     //Load Data
-    Data data; 
+    Data data(n_dims); 
     if(method == "GL"){
         t.start();
         data.load_graph(input);
         t.end();
         std::cout << "[DATA.Loading] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
         std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;        
-
     }else if(method == "DR"){
         data.load_vector(input);
     }
     
     t.start();
-    data.to_probabilistic_graph(method);
+    data.gen_probabilistic_graph(method);
     t.end();
-    std::cout << "[DATA.ToProbabilisticGraph] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
+    std::cout << "[DATA.GenProbabilisticGraph] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
     std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;
 
     t.start();
@@ -138,11 +142,12 @@ int main(int argc, char** argv){
     //Optimization
     Optimization optim;
     t.start();
-    optim.init_edge_sampler(data.multilevels[0]->get_E(), data.multilevels[0]->get_weight());
-    // std::cout << optim.edge_sampler->sample(0.1, 0.1) << std::endl;
     optim.init_vertice_sampler(data.multilevels[0]->get_V(), data.multilevels[0]->get_masses());
-    // std::cout << opt.vertice_sampler->sample(0.1, 0.1) << std::endl;
-    //opt.run();
+    optim.init_edge_sampler(data.multilevels[0]->get_E(), data.multilevels[0]->get_weight());
+    // data.init_embedding();
+    optim.init_params(data.multilevels[0]->get_V(), data.n_dims, data.multilevels.back());
+    optim.run();
+    
     t.end();
     std::cout << "[OPTIMIZATION] Real Time: "<<  t.real_time() <<"s" << " CPU Time: "<<  t.cpu_time() << "s" << std::endl;
     std::cout<< std::fixed << "[MONITOR] Memory: " << (long)mem_usage() << " KB" << std::endl;

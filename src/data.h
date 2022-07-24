@@ -17,6 +17,7 @@
 #include <indicators/progress_bar.hpp>
 #include <indicators/progress_spinner.hpp>
 #include <indicators/cursor_control.hpp>
+
 #include "graph.h"
 #include "probabilistic_graph.h"
 
@@ -55,16 +56,17 @@ public:
     float* embedding;
     
     Data(const Data &);
-    Data();
+    Data(int n_dims);
     ~Data();
 
     void load_graph(std::string& file);
-    void to_probabilistic_graph(std::string method);
+    void gen_probabilistic_graph(std::string method);
     void graph2dist(int max_dist);
     void dist2weight();
     static void* dist2weight_thread_caller(void *args);
     void dist2weight_thread(int id);
     void build_multilevel();
+    void init_embedding();
     
     void load_vector(std::string& file);
 };

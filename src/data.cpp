@@ -10,7 +10,9 @@
 #include "data.h"
 
 
-Data::Data() {}
+Data::Data(int n_dims) {
+    this->n_dims = n_dims;
+}
 
 Data::~Data() {
 }
@@ -186,7 +188,7 @@ void Data::load_graph_from_binary(std::string& file){
     fin.close();
 }
 
-void Data::to_probabilistic_graph(std::string method){
+void Data::gen_probabilistic_graph(std::string method){
     // intermediate representation
     // std::vector<std::vector<int>> adj(n_vertices, std::vector<int>());
     // std::vector<std::vector<float>> weight(n_vertices, std::vector<float>()); 
@@ -300,6 +302,10 @@ void Data::build_multilevel(){
             break;
         } 
     };
+}
+
+void Data::init_embedding(){
+    embedding = new float[n_vertices * n_dims];
 }
 
 void Data::load_vector(std::string& file){
