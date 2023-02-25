@@ -6,7 +6,7 @@
 genrandom::genrandom() {}
 
 //LargeVis gsl back[0,1)
-gsl_rng * genrandom::init_gsl (){
+void genrandom::init_gsl (){
     const gsl_rng_type * T;
     real u;
     gsl_rng_env_setup();
