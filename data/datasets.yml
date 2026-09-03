@@ -8,27 +8,27 @@ paper:
 
 # Table 1 of the paper. The source URLs are direct downloads and the counts are checked by prepare.sh.
 paper_datasets:
-  dwt_72: {nodes: 72, edges: 75, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_72.txt}
-  lesmis: {nodes: 77, edges: 254, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/lesmis.txt}
-  can_96: {nodes: 96, edges: 336, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/can_96.txt}
-  rajat11: {nodes: 135, edges: 377, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/rajat11.txt}
-  jazz: {nodes: 198, edges: 2742, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/jazz.txt}
-  visbrazil: {nodes: 222, edges: 336, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/visbrazil.txt}
-  grid17: {nodes: 289, edges: 544, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/grid17.txt}
-  mesh3e1: {nodes: 289, edges: 800, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/mesh3e1.txt}
-  netscience: {nodes: 379, edges: 914, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/netscience.txt}
-  dwt_419: {nodes: 419, edges: 1572, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_419.txt}
-  price_1000: {nodes: 1000, edges: 999, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/price_1000.txt}
-  dwt_1005: {nodes: 1005, edges: 3808, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_1005.txt}
-  cage8: {nodes: 1015, edges: 4994, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/cage8.txt}
-  bcsstk09: {nodes: 1083, edges: 8677, format: vna, download: https://github.com/HanKruiger/tsNET/raw/refs/heads/master/graphs/bcsstk09.vna}
-  block_2000: {nodes: 2000, edges: 9912, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/block_2000.txt}
-  sierpinski3d: {nodes: 2050, edges: 6144, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/sierpinski3d.txt}
-  CA-GrQc: {nodes: 4158, edges: 13422, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/CA-GrQc.txt}
-  EVA: {nodes: 4475, edges: 4652, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/EVA.txt}
-  3elt: {nodes: 4720, edges: 13722, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/3elt.txt}
-  us_powergrid: {nodes: 4941, edges: 6594, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/us_powergrid.txt}
-  G65: {nodes: 8000, edges: 16000, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/G65.txt}
+  dwt_72: {nodes: 72, edges: 75, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/dwt_72.txt}
+  lesmis: {nodes: 77, edges: 254, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/lesmis.txt}
+  can_96: {nodes: 96, edges: 336, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/can_96.txt}
+  rajat11: {nodes: 135, edges: 377, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/rajat11.txt}
+  jazz: {nodes: 198, edges: 2742, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/jazz.txt}
+  visbrazil: {nodes: 222, edges: 336, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/visbrazil.txt}
+  grid17: {nodes: 289, edges: 544, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/grid17.txt}
+  mesh3e1: {nodes: 289, edges: 800, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/mesh3e1.txt}
+  netscience: {nodes: 379, edges: 914, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/netscience.txt}
+  dwt_419: {nodes: 419, edges: 1572, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/dwt_419.txt}
+  price_1000: {nodes: 1000, edges: 999, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/price_1000.txt}
+  dwt_1005: {nodes: 1005, edges: 3808, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/dwt_1005.txt}
+  cage8: {nodes: 1015, edges: 4994, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/cage8.txt}
+  bcsstk09: {nodes: 1083, edges: 8677, format: vna, download: https://github.com/HanKruiger/tsNET/raw/356c94acbe3d11b1fb6025f6263e85e9f4e3f96a/graphs/bcsstk09.vna}
+  block_2000: {nodes: 2000, edges: 9912, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/block_2000.txt}
+  sierpinski3d: {nodes: 2050, edges: 6144, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/sierpinski3d.txt}
+  CA-GrQc: {nodes: 4158, edges: 13422, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/CA-GrQc.txt}
+  EVA: {nodes: 4475, edges: 4652, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/EVA.txt}
+  3elt: {nodes: 4720, edges: 13722, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/3elt.txt}
+  us_powergrid: {nodes: 4941, edges: 6594, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/us_powergrid.txt}
+  G65: {nodes: 8000, edges: 16000, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/G65.txt}
   fe_4elt2: {nodes: 11143, edges: 32818, format: matrix-market, download: https://sparse.tamu.edu/MM/DIMACS10/fe_4elt2.tar.gz}
   # The current SuiteSparse bcsstk31 source has 35588 rows; the paper table lists 32715.
   bcsstk31: {nodes: 32715, source_nodes: 35588, edges: 572914, format: matrix-market, download: https://sparse.tamu.edu/MM/HB/bcsstk31.tar.gz}

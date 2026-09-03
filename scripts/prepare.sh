@@ -94,27 +94,27 @@ paper_graph_format=""
 paper_graph_vertices=0
 paper_graph_edges=0
 case "$dataset" in
-    dwt_72) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_72.txt"; paper_graph_format=text; paper_graph_vertices=72; paper_graph_edges=75 ;;
-    lesmis) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/lesmis.txt"; paper_graph_format=text; paper_graph_vertices=77; paper_graph_edges=254 ;;
-    can_96) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/can_96.txt"; paper_graph_format=text; paper_graph_vertices=96; paper_graph_edges=336 ;;
-    rajat11) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/rajat11.txt"; paper_graph_format=text; paper_graph_vertices=135; paper_graph_edges=377 ;;
-    jazz) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/jazz.txt"; paper_graph_format=text; paper_graph_vertices=198; paper_graph_edges=2742 ;;
-    visbrazil) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/visbrazil.txt"; paper_graph_format=text; paper_graph_vertices=222; paper_graph_edges=336 ;;
-    grid17) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/grid17.txt"; paper_graph_format=text; paper_graph_vertices=289; paper_graph_edges=544 ;;
-    mesh3e1) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/mesh3e1.txt"; paper_graph_format=text; paper_graph_vertices=289; paper_graph_edges=800 ;;
-    netscience) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/netscience.txt"; paper_graph_format=text; paper_graph_vertices=379; paper_graph_edges=914 ;;
-    dwt_419) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_419.txt"; paper_graph_format=text; paper_graph_vertices=419; paper_graph_edges=1572 ;;
-    price_1000) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/price_1000.txt"; paper_graph_format=text; paper_graph_vertices=1000; paper_graph_edges=999 ;;
-    dwt_1005) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_1005.txt"; paper_graph_format=text; paper_graph_vertices=1005; paper_graph_edges=3808 ;;
-    cage8) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/cage8.txt"; paper_graph_format=text; paper_graph_vertices=1015; paper_graph_edges=4994 ;;
-    block_2000) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/block_2000.txt"; paper_graph_format=text; paper_graph_vertices=2000; paper_graph_edges=9912 ;;
-    sierpinski3d) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/sierpinski3d.txt"; paper_graph_format=text; paper_graph_vertices=2050; paper_graph_edges=6144 ;;
-    CA-GrQc) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/CA-GrQc.txt"; paper_graph_format=text; paper_graph_vertices=4158; paper_graph_edges=13422 ;;
-    EVA) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/EVA.txt"; paper_graph_format=text; paper_graph_vertices=4475; paper_graph_edges=4652 ;;
-    3elt) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/3elt.txt"; paper_graph_format=text; paper_graph_vertices=4720; paper_graph_edges=13722 ;;
-    us_powergrid) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/us_powergrid.txt"; paper_graph_format=text; paper_graph_vertices=4941; paper_graph_edges=6594 ;;
-    G65) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/G65.txt"; paper_graph_format=text; paper_graph_vertices=8000; paper_graph_edges=16000 ;;
-    bcsstk09) paper_graph_source="https://github.com/HanKruiger/tsNET/raw/refs/heads/master/graphs/bcsstk09.vna"; paper_graph_format=vna; paper_graph_vertices=1083; paper_graph_edges=8677 ;;
+    dwt_72) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/dwt_72.txt"; paper_graph_format=text; paper_graph_vertices=72; paper_graph_edges=75 ;;
+    lesmis) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/lesmis.txt"; paper_graph_format=text; paper_graph_vertices=77; paper_graph_edges=254 ;;
+    can_96) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/can_96.txt"; paper_graph_format=text; paper_graph_vertices=96; paper_graph_edges=336 ;;
+    rajat11) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/rajat11.txt"; paper_graph_format=text; paper_graph_vertices=135; paper_graph_edges=377 ;;
+    jazz) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/jazz.txt"; paper_graph_format=text; paper_graph_vertices=198; paper_graph_edges=2742 ;;
+    visbrazil) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/visbrazil.txt"; paper_graph_format=text; paper_graph_vertices=222; paper_graph_edges=336 ;;
+    grid17) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/grid17.txt"; paper_graph_format=text; paper_graph_vertices=289; paper_graph_edges=544 ;;
+    mesh3e1) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/mesh3e1.txt"; paper_graph_format=text; paper_graph_vertices=289; paper_graph_edges=800 ;;
+    netscience) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/netscience.txt"; paper_graph_format=text; paper_graph_vertices=379; paper_graph_edges=914 ;;
+    dwt_419) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/dwt_419.txt"; paper_graph_format=text; paper_graph_vertices=419; paper_graph_edges=1572 ;;
+    price_1000) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/price_1000.txt"; paper_graph_format=text; paper_graph_vertices=1000; paper_graph_edges=999 ;;
+    dwt_1005) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/dwt_1005.txt"; paper_graph_format=text; paper_graph_vertices=1005; paper_graph_edges=3808 ;;
+    cage8) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/cage8.txt"; paper_graph_format=text; paper_graph_vertices=1015; paper_graph_edges=4994 ;;
+    block_2000) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/block_2000.txt"; paper_graph_format=text; paper_graph_vertices=2000; paper_graph_edges=9912 ;;
+    sierpinski3d) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/sierpinski3d.txt"; paper_graph_format=text; paper_graph_vertices=2050; paper_graph_edges=6144 ;;
+    CA-GrQc) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/CA-GrQc.txt"; paper_graph_format=text; paper_graph_vertices=4158; paper_graph_edges=13422 ;;
+    EVA) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/EVA.txt"; paper_graph_format=text; paper_graph_vertices=4475; paper_graph_edges=4652 ;;
+    3elt) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/3elt.txt"; paper_graph_format=text; paper_graph_vertices=4720; paper_graph_edges=13722 ;;
+    us_powergrid) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/us_powergrid.txt"; paper_graph_format=text; paper_graph_vertices=4941; paper_graph_edges=6594 ;;
+    G65) paper_graph_source="https://raw.githubusercontent.com/ZJUVAI/DRGraph/8f400fe0bd010af3841f34bbcc7209d171298b03/data/G65.txt"; paper_graph_format=text; paper_graph_vertices=8000; paper_graph_edges=16000 ;;
+    bcsstk09) paper_graph_source="https://github.com/HanKruiger/tsNET/raw/356c94acbe3d11b1fb6025f6263e85e9f4e3f96a/graphs/bcsstk09.vna"; paper_graph_format=vna; paper_graph_vertices=1083; paper_graph_edges=8677 ;;
     fe_4elt2) paper_graph_source="https://sparse.tamu.edu/MM/DIMACS10/fe_4elt2.tar.gz"; paper_graph_format=matrix-market; paper_graph_vertices=11143; paper_graph_edges=32818 ;;
     bcsstk31) paper_graph_source="https://sparse.tamu.edu/MM/HB/bcsstk31.tar.gz"; paper_graph_format=matrix-market; paper_graph_vertices=35588; paper_graph_edges=572914 ;;
     venkat50) paper_graph_source="https://sparse.tamu.edu/MM/Simon/venkat50.tar.gz"; paper_graph_format=matrix-market; paper_graph_vertices=62424; paper_graph_edges=827671 ;;
