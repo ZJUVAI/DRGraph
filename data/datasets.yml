@@ -1,0 +1,78 @@
+# Unified dataset manifest. Downloads go under data/raw/ and generated files under data/results/.
+# prepare.sh creates DRGBIN01 binaries.
+paper:
+  title: "DRGraph: An Efficient Graph Layout Algorithm for Large-scale Graphs by Dimensionality Reduction"
+  url: https://arxiv.org/abs/2008.07799
+  table: 1
+  dataset_count: 30
+
+# Table 1 of the paper. The source URLs are direct downloads and the counts are checked by prepare.sh.
+paper_datasets:
+  dwt_72: {nodes: 72, edges: 75, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_72.txt}
+  lesmis: {nodes: 77, edges: 254, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/lesmis.txt}
+  can_96: {nodes: 96, edges: 336, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/can_96.txt}
+  rajat11: {nodes: 135, edges: 377, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/rajat11.txt}
+  jazz: {nodes: 198, edges: 2742, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/jazz.txt}
+  visbrazil: {nodes: 222, edges: 336, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/visbrazil.txt}
+  grid17: {nodes: 289, edges: 544, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/grid17.txt}
+  mesh3e1: {nodes: 289, edges: 800, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/mesh3e1.txt}
+  netscience: {nodes: 379, edges: 914, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/netscience.txt}
+  dwt_419: {nodes: 419, edges: 1572, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_419.txt}
+  price_1000: {nodes: 1000, edges: 999, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/price_1000.txt}
+  dwt_1005: {nodes: 1005, edges: 3808, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/dwt_1005.txt}
+  cage8: {nodes: 1015, edges: 4994, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/cage8.txt}
+  bcsstk09: {nodes: 1083, edges: 8677, format: vna, download: https://github.com/HanKruiger/tsNET/raw/refs/heads/master/graphs/bcsstk09.vna}
+  block_2000: {nodes: 2000, edges: 9912, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/block_2000.txt}
+  sierpinski3d: {nodes: 2050, edges: 6144, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/sierpinski3d.txt}
+  CA-GrQc: {nodes: 4158, edges: 13422, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/CA-GrQc.txt}
+  EVA: {nodes: 4475, edges: 4652, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/EVA.txt}
+  3elt: {nodes: 4720, edges: 13722, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/3elt.txt}
+  us_powergrid: {nodes: 4941, edges: 6594, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/us_powergrid.txt}
+  G65: {nodes: 8000, edges: 16000, format: text, download: https://raw.githubusercontent.com/ZJUVAI/DRGraph/master/data/G65.txt}
+  fe_4elt2: {nodes: 11143, edges: 32818, format: matrix-market, download: https://sparse.tamu.edu/MM/DIMACS10/fe_4elt2.tar.gz}
+  # The current SuiteSparse bcsstk31 source has 35588 rows; the paper table lists 32715.
+  bcsstk31: {nodes: 32715, source_nodes: 35588, edges: 572914, format: matrix-market, download: https://sparse.tamu.edu/MM/HB/bcsstk31.tar.gz}
+  venkat50: {nodes: 62424, edges: 827671, format: matrix-market, download: https://sparse.tamu.edu/MM/Simon/venkat50.tar.gz}
+  ship_003: {nodes: 121728, edges: 1827654, format: matrix-market, download: https://sparse.tamu.edu/MM/DNVS/ship_003.tar.gz}
+  troll: {nodes: 213453, edges: 5885829, format: matrix-market, download: https://sparse.tamu.edu/MM/DNVS/troll.tar.gz}
+  web-NotreDame: {nodes: 325729, edges: 1469679, format: snap, download: https://snap.stanford.edu/data/web-NotreDame.txt.gz}
+  Flan_1565: {nodes: 1564794, edges: 56300289, format: matrix-market, download: https://sparse.tamu.edu/MM/Janna/Flan_1565.tar.gz}
+  com-Orkut: {nodes: 3072441, edges: 117185083, format: snap, download: https://snap.stanford.edu/data/bigdata/communities/com-orkut.ungraph.txt.gz}
+  com-LiveJournal: {nodes: 3997962, edges: 34681189, format: snap, download: https://snap.stanford.edu/data/bigdata/communities/com-lj.ungraph.txt.gz}
+
+datasets:
+  mnist:
+    kind: data
+    source: https://ossci-datasets.s3.amazonaws.com/mnist/
+    files:
+      - train-images-idx3-ubyte.gz
+      - t10k-images-idx3-ubyte.gz
+    output: mnist.data
+    default_args: "--knn-k 100 --epochs 1 --samples 500 --negative 5 --output-dim 2"
+  fashion-mnist:
+    kind: data
+    source: http://fashion-mnist.s3-website.eu-central-1.amazonaws.com/
+    files:
+      - train-images-idx3-ubyte.gz
+      - t10k-images-idx3-ubyte.gz
+    output: fashion-mnist.data
+    default_args: "--knn-k 100 --epochs 1 --samples 500 --negative 5 --output-dim 2"
+  sift1m:
+    kind: data
+    source: https://ann-benchmarks.com/sift-128-euclidean.hdf5
+    source_commit: erikbern/ann-benchmarks@2e081ad32c1eccab72dcb739ad886c310b90f715
+    official_source: ftp://ftp.irisa.fr/local/texmex/corpus/sift.tar.gz
+    official_md5: b23d1b3b2ee8469d819b61ca900ef0ed
+    official_status: Official MD5 and sift_base.fvecs value-by-value comparison passed, 2026-08-30
+    output: sift1m.data
+    default_args: "--knn-k 100 --epochs 1 --samples 500 --negative 5 --output-dim 2"
+  troll:
+    kind: graph
+    source: https://sparse.tamu.edu/MM/DNVS/troll.tar.gz
+    output: troll.graph
+    default_args: "--epochs 1 --samples 400 --negative 5 --threads 32 --output-dim 2"
+  com-orkut:
+    kind: graph
+    source: https://snap.stanford.edu/data/bigdata/communities/com-orkut.ungraph.txt.gz
+    output: com-orkut.graph
+    default_args: "--epochs 1 --samples 400 --negative 5 --threads 32 --output-dim 2"
